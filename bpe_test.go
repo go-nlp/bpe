@@ -8,7 +8,7 @@ import (
 	"testing"
 	"unsafe"
 
-	"github.com/chewxy/lingo/corpus"
+	"github.com/go-nlp/corpus"
 	"github.com/stretchr/testify/assert"
 )
 

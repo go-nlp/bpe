@@ -3,7 +3,7 @@ package bpe
 import (
 	"strings"
 
-	"github.com/chewxy/lingo/corpus"
+	"github.com/go-nlp/corpus"
 )
 
 // Tokenizer is a function that tokenizes a string. This library provides a simple tokenizer.
