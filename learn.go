@@ -24,6 +24,14 @@ type Statistics struct {
 func PairStats(c *corpus.Corpus, opts ...FuncOpt) Statistics {
 	stats := make(map[Pair]int)
 	indices := make(map[Pair]map[int]int) // pair:{wordid:freq}
+
+	// we only rely on the markEOW funcmod
+	var m funcMod
+	for _, o := range opts {
+		o(&m)
+	}
+	m.buf = nil
+
 	// ENHANCEMENT: indices should have its own data struct
 	var maxRune rune
 	for i := 0; i < c.Size(); i++ {
@@ -39,7 +47,7 @@ func PairStats(c *corpus.Corpus, opts ...FuncOpt) Statistics {
 			if r := p.Snd(); r > maxRune {
 				maxRune = r
 			}
-			if j == len(ps)-1 {
+			if j == len(ps)-1 && m.markEOW {
 				p.snd = rune(-(int32(p.snd))) // the negative is a hack to mark the end of a word symbol
 			}
 			stats[p] += freq
@@ -66,9 +74,9 @@ type Encoder struct {
 }
 
 // Learn learns an Encoder from the given data in the corpus in the input.
-func Learn(c *corpus.Corpus, symbols, minFreq int) (retVal Encoder, err error) {
+func Learn(c *corpus.Corpus, symbols, minFreq int, markEOW bool) (retVal Encoder, err error) {
 	// if there are any preallocated []Pair that is being used, they will be safe for reuse once this function finishes
-	stats := PairStats(c)
+	stats := PairStats(c, MarkEOW(markEOW))
 
 	var list []Pair
 	rep := make(map[Pair]rune)
