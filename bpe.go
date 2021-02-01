@@ -71,6 +71,16 @@ func PairsRunes(word []rune, opts ...FuncOpt) []Pair {
 	return pairs2(word, m.buf)
 }
 
+// PairsWithReuse is the Pairs function, but with a buffer passed in specifically.
+func PairsWithReuse(word string, buf []Pair) []Pair {
+	return pairs(word, buf)
+}
+
+// PairsRunesWithReuse is the PairsRunes function, but with a buffer passed in specifically.
+func PairsRunesWithReuse(word []rune, buf []Pair) []Pair {
+	return pairs2(word, buf)
+}
+
 // UTIL
 
 func inRange(r rune, rs []rune) bool {

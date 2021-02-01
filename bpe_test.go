@@ -127,7 +127,7 @@ func TestLearn(t *testing.T) {
 	text := *(*string)(unsafe.Pointer(&bs))
 	c, _ := corpus.Construct(corpus.WithWords(SimpleTokenizer(text)))
 
-	ps, err := Learn(c, 10, 2)
+	ps, err := Learn(c, 10, 2, true)
 	if err != nil {
 		t.Error(err)
 	}
@@ -204,20 +204,18 @@ func benchLearnSetup() *corpus.Corpus {
 	return c
 }
 
-/*
 func BenchmarkWithBuf(b *testing.B) {
 	b.StopTimer()
 	c := benchLearnSetup()
-	buf := make([]Pair, 20)
 	b.ResetTimer()
 	b.StartTimer()
 
-	var ps []Pair
+	var ps Encoder
 	for i := 0; i < b.N; i++ {
-		ps, _ = Learn(c, 100, 2, WithReuse(buf))
+		ps, _ = Learn(c, 100, 2, true)
 	}
 	_ = ps
-}*/
+}
 
 func BenchmarkWithoutBuf(b *testing.B) {
 	b.StopTimer()
@@ -227,7 +225,7 @@ func BenchmarkWithoutBuf(b *testing.B) {
 
 	var ps Encoder
 	for i := 0; i < b.N; i++ {
-		ps, _ = Learn(c, 100, 2)
+		ps, _ = Learn(c, 100, 2, true)
 	}
 	_ = ps
 }
