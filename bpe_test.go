@@ -104,7 +104,7 @@ func Test_updateStats(t *testing.T) {
 	const text2 = `hxlo world el mxodies`
 	assert := assert.New(t)
 	c, _ := corpus.Construct(corpus.WithWords(SimpleTokenizer(text)))
-	s := PairStats(c)
+	s := PairStats(c, MarkEOW(true))
 	p := Pair{'e', 'l'}
 	r := replacePair(s, p)
 	updateStats(&s, r, p)
@@ -113,7 +113,7 @@ func Test_updateStats(t *testing.T) {
 	assert.Equal('x', s.MaxRune)
 
 	d, _ := corpus.Construct(corpus.WithWords(SimpleTokenizer(text2)))
-	S := PairStats(d)
+	S := PairStats(d, MarkEOW(true))
 	assert.Equal(S.Stats, s.Stats)
 	assert.Equal(S.Indices, s.Indices)
 }
